@@ -32,8 +32,8 @@ jobs:
         switches: -avzr --delete
         path: dist/
         remote_path: /var/www/gmsteck.com
-        remote_host: 143.198.111.133
-        remote_user: gmsteck
+        remote_host: ${{ secrets.HOST_IP }}
+        remote_user: ${{ secrets.USER }}
         remote_key: ${{ secrets.PRIVATE_KEY }}
 
     - name: Reload NGINX on remote server
@@ -41,4 +41,4 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa gmsteck@143.198.111.133 "sudo -n systemctl reload nginx"
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.USER }}@${{ secrets.HOST_IP }} "sudo -n systemctl reload nginx"
